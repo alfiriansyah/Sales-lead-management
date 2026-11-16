@@ -118,19 +118,30 @@
       .number { font-size: 23px; }
       header { align-items: flex-start; gap: 12px; }
     }
-  </style>
+  
+a.menu {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+a.menu:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+</style>
 </head>
 <body>
 
 <aside class="sidebar">
   <div class="brand">DIGI<span>PLUS</span></div>
   <div class="subtitle">LEAD MANAGEMENT SYSTEM</div>
-  <div class="menu active">▦ &nbsp; Dashboard</div>
-  <div class="menu">♙ &nbsp; Lead Database</div>
-  <div class="menu">◷ &nbsp; Follow-up</div>
-  <div class="menu">↘ &nbsp; Lost Sales</div>
-  <div class="menu">▥ &nbsp; Sales Performance</div>
-  <div class="menu">⚙ &nbsp; Settings</div>
+<a class="menu active" href="index.html">📊 &nbsp; Dashboard</a>
+<a class="menu" href="leads.html">👥 &nbsp; Lead Database</a>
+<a class="menu" href="follow-up.html">📅 &nbsp; Follow-up</a>
+<a class="menu" href="lost-sales.html">📉 &nbsp; Lost Sales</a>
+<a class="menu" href="sales-performance.html">📈 &nbsp; Sales Performance</a>
+<div class="menu">⚙️ &nbsp; Settings</div>
 </aside>
 
 <main>
