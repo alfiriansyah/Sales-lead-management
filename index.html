@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digiplus | Lead Management</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6fa;
+      color: #172033;
+    }
+    .sidebar {
+      position: fixed;
+      width: 235px;
+      height: 100vh;
+      background: #111827;
+      color: white;
+      padding: 26px 18px;
+    }
+    .brand { font-size: 23px; font-weight: 800; margin-bottom: 7px; }
+    .brand span { color: #36c5bd; }
+    .subtitle { color: #9ca3af; font-size: 11px; margin-bottom: 38px; }
+    .menu {
+      display: block;
+      padding: 13px;
+      margin: 7px 0;
+      color: #cbd5e1;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .menu.active, .menu:hover {
+      background: #26364c;
+      color: white;
+    }
+    main { margin-left: 235px; padding: 30px; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    h1 { font-size: 25px; margin: 0 0 8px; }
+    .muted { color: #8490a3; font-size: 13px; }
+    .profile {
+      background: white;
+      padding: 11px 16px;
+      border-radius: 9px;
+      font-size: 13px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 17px;
+      margin-bottom: 24px;
+    }
+    .card, .panel {
+      background: white;
+      border: 1px solid #e8ebf1;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .card-label { color: #778399; font-size: 13px; }
+    .number { font-size: 29px; font-weight: 750; margin: 13px 0 7px; }
+    .change { color: #14977e; font-size: 12px; }
+    .content {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 18px;
+    }
+    h2 { font-size: 16px; margin: 0 0 20px; }
+    .bar-row { margin: 18px 0; font-size: 13px; }
+    .bar-bg {
+      height: 9px;
+      background: #edf0f5;
+      border-radius: 10px;
+      margin-top: 8px;
+    }
+    .bar {
+      height: 9px;
+      background: #21aaa3;
+      border-radius: 10px;
+    }
+    .status {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 20px;
+      background: #e8f7f2;
+      color: #16846d;
+      font-size: 11px;
+    }
+    .note { color: #8993a4; font-size: 12px; margin-top: 20px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 480px; }
+    th, td {
+      text-align: left;
+      padding: 13px 10px;
+      border-bottom: 1px solid #edf0f4;
+      font-size: 12px;
+    }
+    th { color: #8490a3; font-weight: 600; }
+    @media(max-width: 900px) {
+      .sidebar { width: 185px; }
+      main { margin-left: 185px; padding: 20px; }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      .content { grid-template-columns: 1fr; }
+    }
+    @media(max-width: 600px) {
+      .sidebar { position: static; width: 100%; height: auto; }
+      .subtitle { margin-bottom: 15px; }
+      main { margin-left: 0; padding: 17px; }
+      .cards { gap: 9px; }
+      .card { padding: 13px; }
+      .number { font-size: 23px; }
+      header { align-items: flex-start; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">DIGI<span>PLUS</span></div>
+  <div class="subtitle">LEAD MANAGEMENT SYSTEM</div>
+  <div class="menu active">▦ &nbsp; Dashboard</div>
+  <div class="menu">♙ &nbsp; Lead Database</div>
+  <div class="menu">◷ &nbsp; Follow-up</div>
+  <div class="menu">↘ &nbsp; Lost Sales</div>
+  <div class="menu">▥ &nbsp; Sales Performance</div>
+  <div class="menu">⚙ &nbsp; Settings</div>
+</aside>
+
+<main>
+  <header>
+    <div>
+      <h1>Sales Dashboard</h1>
+      <div class="muted">Welcome to Digiplus Lead Management System</div>
+    </div>
+    <div class="profile">Admin &nbsp; ●</div>
+  </header>
+
+  <section class="cards">
+    <div class="card">
+      <div class="card-label">Total Leads</div>
+      <div class="number">250</div>
+      <div class="change">↑ 12% from last month</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Successful Deals</div>
+      <div class="number">68</div>
+      <div class="change">↑ 8% from last month</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Conversion Rate</div>
+      <div class="number">27.2%</div>
+      <div class="change">↑ 3.5% from last month</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Lost Sales</div>
+      <div class="number">32</div>
+      <div class="change" style="color:#d97757">Opportunities lost</div>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="panel">
+      <h2>Lead Pipeline</h2>
+      <div class="bar-row">
+        New Leads — 100
+        <div class="bar-bg"><div class="bar" style="width:100%"></div></div>
+      </div>
+      <div class="bar-row">
+        Contacted — 75
+        <div class="bar-bg"><div class="bar" style="width:75%"></div></div>
+      </div>
+      <div class="bar-row">
+        Store Visit — 45
+        <div class="bar-bg"><div class="bar" style="width:45%"></div></div>
+      </div>
+      <div class="bar-row">
+        Successful Deals — 30
+        <div class="bar-bg"><div class="bar" style="width:30%"></div></div>
+      </div>
+      <div class="note">Illustrative demo data — not connected to a database.</div>
+    </div>
+
+    <div class="panel">
+      <h2>Lost Sales Overview</h2>
+      <div class="bar-row">Price Issue <span style="float:right">12</span></div>
+      <div class="bar-row">Out of Stock <span style="float:right">9</span></div>
+      <div class="bar-row">Competitor <span style="float:right">7</span></div>
+      <div class="bar-row">Customer Cancel <span style="float:right">4</span></div>
+      <div class="note">Sample categories for analysis.</div>
+    </div>
+  </section>
+
+  <section class="panel" style="margin-top:20px">
+    <h2>Recent Leads</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Product Interest</th>
+            <th>Sales</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Customer Demo 01</td>
+            <td>iPhone</td>
+            <td>Sales A</td>
+            <td><span class="status">Contacted</span></td>
+          </tr>
+          <tr>
+            <td>Customer Demo 02</td>
+            <td>MacBook</td>
+            <td>Sales B</td>
+            <td><span class="status">New Lead</span></td>
+          </tr>
+          <tr>
+            <td>Customer Demo 03</td>
+            <td>iPad</td>
+            <td>Sales C</td>
+            <td><span class="status">Store Visit</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">All customer names above are fictional demonstration data.</div>
+  </section>
+</main>
+
+</body>
+</html>
