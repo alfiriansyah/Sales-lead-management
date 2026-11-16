@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digiplus | Follow-up Management</title>
+<style>
+:root{--navy:#111827;--teal:#20aaa2;--bg:#f4f6fa;--ink:#172033;--muted:#778399;--line:#e7ebf1}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif}
+.sidebar{position:fixed;inset:0 auto 0 0;width:235px;background:var(--navy);color:#fff;padding:25px 18px}.brand{font-size:23px;font-weight:800}.brand span{color:#36c5bd}.sub{font-size:10px;color:#9ca3af;letter-spacing:1px;margin:7px 0 34px}
+.nav{display:block;color:#cbd5e1;text-decoration:none;padding:12px;border-radius:8px;margin:6px 0;font-size:14px}.nav.active,.nav:hover{background:#26364c;color:#fff}
+main{margin-left:235px;padding:28px;max-width:1600px}header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px}h1{font-size:25px;margin:0 0 7px}.muted{font-size:13px;color:var(--muted)}.profile{background:white;border:1px solid var(--line);padding:10px 14px;border-radius:9px;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:20px 0}.stat,.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:17px}.stat small{color:var(--muted)}.stat strong{display:block;font-size:25px;margin-top:9px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}input,select,textarea{font:inherit;border:1px solid #dce2eb;border-radius:8px;padding:11px 12px;background:white;color:var(--ink);width:100%;outline:none}.search{flex:1;min-width:210px}
+button{border:0;border-radius:8px;padding:11px 15px;background:var(--teal);color:white;font-weight:650;cursor:pointer}button.secondary{background:#e9edf3;color:#344054}button.danger{background:#fff0ee;color:#b54736}
+.tablebox{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}.tablehead{padding:18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center}.tablewrap{overflow:auto}
+table{border-collapse:collapse;width:100%;min-width:1050px}th,td{text-align:left;padding:13px 14px;border-bottom:1px solid #edf0f4;font-size:12px}th{color:var(--muted);background:#fafbfc;font-weight:650}
+.pill{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;background:#edf2f7;color:#475467;white-space:nowrap}.green{background:#e7f6ef;color:#16794f}.orange{background:#fff4e5;color:#a15c00}.red{background:#fff0ee;color:#b54736}
+.actions{display:flex;gap:6px}.actions button{padding:7px 9px;font-size:11px}.empty{text-align:center;padding:35px;color:var(--muted)}.notice{font-size:12px;color:#667085;margin:14px 0 0}.late{color:#b54736;font-weight:700}
+.modal{display:none;position:fixed;inset:0;background:#10182880;align-items:center;justify-content:center;padding:18px;z-index:5}.modal.open{display:flex}.dialog{background:white;border-radius:14px;width:min(680px,100%);max-height:90vh;overflow:auto;padding:22px}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:12px;font-weight:650;color:#475467}.field.full{grid-column:1/-1}.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modalhead h2{margin:0;font-size:19px}.modalfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+@media(max-width:950px){.sidebar{width:190px}main{margin-left:190px;padding:19px}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.sidebar{position:static;width:100%;height:auto}.sub{margin-bottom:15px}.nav{display:inline-block;margin:2px;padding:9px}main{margin:0;padding:15px}header{align-items:flex-start}.stats{gap:8px}.stat{padding:13px}.stat strong{font-size:21px}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}}
+</style></head>
+<body>
+<aside class="sidebar"><div class="brand">DIGI<span>PLUS</span></div><div class="sub">LEAD MANAGEMENT SYSTEM</div>
+<a class="nav" href="index.html">▦ &nbsp; Dashboard</a><a class="nav" href="leads.html">♙ &nbsp; Lead Database</a><a class="nav active" href="follow-up.html">◷ &nbsp; Follow-up</a><a class="nav" href="lost-sales.html">↘ &nbsp; Lost Sales</a><a class="nav" href="#" onclick="alert('Modul Sales Performance akan dibuat pada tahap berikutnya.');return false">▥ &nbsp; Sales Performance</a></aside>
+<main><header><div><h1>Follow-up Management</h1><div class="muted">Atur jadwal tindak lanjut dan pantau prospek yang perlu dihubungi</div></div><div class="profile">Demo Workspace · Admin</div></header>
+<section class="stats">
+<div class="stat"><small>Total Follow-ups</small><strong id="total">0</strong></div><div class="stat"><small>Jadwal Hari Ini</small><strong id="todayCount">0</strong></div><div class="stat"><small>Terlambat</small><strong id="overdue">0</strong></div><div class="stat"><small>Selesai</small><strong id="done">0</strong></div>
+</section>
+<div class="toolbar"><input id="search" class="search" placeholder="Cari pelanggan, produk, atau sales..."><select id="statusFilter" style="max-width:210px"><option value="">Semua status</option><option>Terjadwal</option><option>Sudah Dihubungi</option><option>Perlu Dijadwalkan Ulang</option><option>Selesai</option></select><button onclick="openForm()">+ Tambah Follow-up</button></div>
+<section class="tablebox"><div class="tablehead"><div><strong>Daftar Follow-up</strong><div class="muted" style="margin-top:4px">Catatan demo tersimpan di browser ini</div></div><button class="secondary" onclick="exportCSV()">Export CSV</button></div>
+<div class="tablewrap"><table><thead><tr><th>Pelanggan</th><th>Kontak</th><th>Produk</th><th>Sales</th><th>Jadwal</th><th>Prioritas</th><th>Status</th><th>Catatan</th><th>Aksi</th></tr></thead><tbody id="rows"></tbody></table><div id="empty" class="empty" style="display:none">Belum ada jadwal follow-up. Klik “Tambah Follow-up” untuk memulai.</div></div></section>
+<p class="notice">Prototype portofolio menggunakan localStorage. Data belum tersinkronisasi dengan Lead Database atau anggota tim. Gunakan data fiktif sampai Supabase dan autentikasi selesai disiapkan.</p></main>
+<div class="modal" id="modal"><div class="dialog"><div class="modalhead"><h2 id="formTitle">Tambah Follow-up</h2><button class="secondary" onclick="closeForm()">✕</button></div>
+<form id="form"><input type="hidden" id="recordId"><div class="formgrid">
+<div class="field"><label>Nama pelanggan *</label><input id="customer" required placeholder="Contoh: Customer Demo 05"></div><div class="field"><label>No. Telepon / WhatsApp</label><input id="phone" placeholder="08xxxxxxxxxx"></div>
+<div class="field"><label>Produk yang diminati</label><input id="product" placeholder="Contoh: iPhone 17 Pro"></div><div class="field"><label>Nama sales *</label><input id="sales" required placeholder="Contoh: Sales Demo A"></div>
+<div class="field"><label>Tanggal follow-up *</label><input id="dueDate" type="date" required></div><div class="field"><label>Prioritas</label><select id="priority"><option>Normal</option><option>Tinggi</option><option>Urgent</option></select></div>
+<div class="field"><label>Status</label><select id="status"><option>Terjadwal</option><option>Sudah Dihubungi</option><option>Perlu Dijadwalkan Ulang</option><option>Selesai</option></select></div><div class="field"><label>Waktu (opsional)</label><input id="time" type="time"></div>
+<div class="field full"><label>Catatan / hasil follow-up</label><textarea id="notes" rows="3" placeholder="Contoh: Hubungi kembali untuk konfirmasi stok dan promo"></textarea></div>
+</div><div class="modalfoot"><button type="button" class="secondary" onclick="closeForm()">Batal</button><button type="submit">Simpan Follow-up</button></div></form></div></div>
+<script>
+const KEY='digiplus_demo_followups_v1';let items=JSON.parse(localStorage.getItem(KEY)||'[]');const today=()=>new Date().toISOString().slice(0,10);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function save(){localStorage.setItem(KEY,JSON.stringify(items));render()}
+function render(){const q=search.value.toLowerCase(),f=statusFilter.value;const filtered=items.filter(x=>(!f||x.status===f)&&[x.customer,x.phone,x.product,x.sales,x.notes].join(' ').toLowerCase().includes(q));
+total.textContent=items.length;todayCount.textContent=items.filter(x=>x.dueDate===today()&&x.status!=='Selesai').length;overdue.textContent=items.filter(x=>x.dueDate<today()&&x.status!=='Selesai').length;done.textContent=items.filter(x=>x.status==='Selesai').length;empty.style.display=filtered.length?'none':'block';
+rows.innerHTML=filtered.map(x=>`<tr><td><strong>${esc(x.customer)}</strong></td><td>${esc(x.phone||'-')}</td><td>${esc(x.product||'-')}</td><td>${esc(x.sales)}</td><td class="${x.dueDate<today()&&x.status!=='Selesai'?'late':''}">${esc(x.dueDate)} ${esc(x.time||'')}</td><td><span class="pill ${x.priority==='Urgent'?'red':x.priority==='Tinggi'?'orange':''}">${esc(x.priority)}</span></td><td><span class="pill ${x.status==='Selesai'?'green':x.status==='Perlu Dijadwalkan Ulang'?'orange':''}">${esc(x.status)}</span></td><td>${esc(x.notes||'-')}</td><td><div class="actions"><button class="secondary" onclick="editItem('${x.id}')">Edit</button><button class="danger" onclick="removeItem('${x.id}')">Hapus</button></div></td></tr>`).join('')}
+function openForm(){form.reset();recordId.value='';dueDate.value=today();formTitle.textContent='Tambah Follow-up';modal.classList.add('open')}
+function closeForm(){modal.classList.remove('open')}
+function editItem(id){const x=items.find(a=>a.id===id);if(!x)return;openForm();formTitle.textContent='Edit Follow-up';for(const [k,v] of Object.entries({recordId:x.id,customer:x.customer,phone:x.phone,product:x.product,sales:x.sales,dueDate:x.dueDate,priority:x.priority,status:x.status,time:x.time,notes:x.notes}))document.getElementById(k).value=v??''}
+form.addEventListener('submit',e=>{e.preventDefault();const id=recordId.value;const x={id:id||crypto.randomUUID(),customer:customer.value.trim(),phone:phone.value.trim(),product:product.value.trim(),sales:sales.value.trim(),dueDate:dueDate.value,priority:priority.value,status:status.value,time:time.value,notes:notes.value.trim()};if(id)items=items.map(a=>a.id===id?x:a);else items.unshift(x);save();closeForm()});
+function removeItem(id){if(confirm('Hapus jadwal follow-up ini?')){items=items.filter(x=>x.id!==id);save()}}
+function exportCSV(){const cols=['Pelanggan','Telepon','Produk','Sales','Tanggal','Waktu','Prioritas','Status','Catatan'];const data=items.map(x=>[x.customer,x.phone,x.product,x.sales,x.dueDate,x.time,x.priority,x.status,x.notes]);const csv=[cols,...data].map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download='digiplus-followups-demo.csv';a.click();URL.revokeObjectURL(a.href)}
+search.addEventListener('input',render);statusFilter.addEventListener('change',render);render();
+</script></body></html>
