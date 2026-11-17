@@ -7,6 +7,7 @@
   <title>Login | Sales Management</title>
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -17,6 +18,7 @@
       font-family: Arial, sans-serif;
       color: #172033;
     }
+
     .login-card {
       width: 100%;
       max-width: 400px;
@@ -25,9 +27,11 @@
       border-radius: 14px;
       box-shadow: 0 8px 30px rgba(0,0,0,.08);
     }
+
     h1 { margin: 0 0 8px; font-size: 25px; }
     .subtitle { color: #687386; margin-bottom: 28px; }
     label { display: block; margin: 16px 0 8px; font-weight: 600; }
+
     input {
       width: 100%;
       padding: 13px;
@@ -35,6 +39,7 @@
       border-radius: 8px;
       font-size: 15px;
     }
+
     button {
       width: 100%;
       padding: 14px;
@@ -46,10 +51,12 @@
       font-size: 15px;
       cursor: pointer;
     }
+
     button:disabled { opacity: .6; cursor: wait; }
-    #message { margin-top: 16px; font-size: 14px; color: #c0392b; }
+    #message { margin-top: 16px; font-size: 14px; }
   </style>
 </head>
+
 <body>
   <div class="login-card">
     <h1>Sales Management</h1>
@@ -77,37 +84,47 @@
 
     form.addEventListener("submit", async function(event) {
       event.preventDefault();
+
       button.disabled = true;
+      message.style.color = "#687386";
       message.textContent = "Signing in...";
 
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
 
-      const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password
-      });
+      try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email,
+          password
+        });
 
-      if (error) {
-        message.textContent = "Login gagal. Periksa email dan password.";
+        if (error) {
+          throw new Error("Login gagal. Periksa email dan password.");
+        }
+
+        const { data: profile, error: profileError } = await supabaseClient
+          .from("profiles")
+          .select("role")
+          .eq("id", data.user.id)
+          .single();
+
+        if (profileError || !profile) {
+          await supabaseClient.auth.signOut();
+          throw new Error("Profil pengguna tidak ditemukan.");
+        }
+
+        if (!["manager", "sales"].includes(profile.role)) {
+          await supabaseClient.auth.signOut();
+          throw new Error("Role pengguna tidak valid.");
+        }
+
+        window.location.href = "index.html";
+
+      } catch (error) {
+        message.style.color = "#c0392b";
+        message.textContent = error.message || "Terjadi kesalahan. Silakan coba lagi.";
         button.disabled = false;
-        return;
       }
-
-      const { data: profile, error: profileError } = await supabaseClient
-        .from("profiles")
-        .select("role")
-        .eq("id", data.user.id)
-        .single();
-
-      if (profileError || !profile) {
-        await supabaseClient.auth.signOut();
-        message.textContent = "Profil pengguna tidak ditemukan.";
-        button.disabled = false;
-        return;
-      }
-
-      window.location.href = "index.html";
     });
   </script>
 </body>
