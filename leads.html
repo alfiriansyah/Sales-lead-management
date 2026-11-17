@@ -1,66 +1,454 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sales Management | Lead Database</title>
 <style>
 :root{--navy:#111827;--teal:#20aaa2;--bg:#f4f6fa;--ink:#172033;--muted:#778399;--line:#e7ebf1}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif}
-.sidebar{position:fixed;inset:0 auto 0 0;width:235px;background:var(--navy);color:#fff;padding:25px 18px}.brand{font-size:23px;font-weight:800}.sub{font-size:10px;color:#9ca3af;letter-spacing:1px;margin:7px 0 34px}
-.nav{display:block;color:#cbd5e1;text-decoration:none;padding:12px;border-radius:8px;margin:6px 0;font-size:14px}.nav.active,.nav:hover{background:#26364c;color:white}
-main{margin-left:235px;padding:28px;max-width:1600px}header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px}h1{font-size:25px;margin:0 0 7px}.muted{font-size:13px;color:var(--muted)}.profile{background:#fff;border:1px solid var(--line);padding:10px 14px;border-radius:9px;font-size:13px}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}.search{flex:1;min-width:210px}input,select,textarea{font:inherit;border:1px solid #dce2eb;border-radius:8px;padding:11px 12px;background:white;color:var(--ink);width:100%;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px #20aaa21c}
-button{border:0;border-radius:8px;padding:11px 15px;background:var(--teal);color:white;font-weight:650;cursor:pointer}button.secondary{background:#e9edf3;color:#344054}button.danger{background:#fff0ee;color:#b54736}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}.stat,.tablebox{background:#fff;border:1px solid var(--line);border-radius:12px}.stat{padding:17px}.stat small{color:var(--muted)}.stat strong{display:block;font-size:25px;margin-top:9px}
-.tablebox{overflow:hidden}.tablehead{padding:18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:920px}th,td{text-align:left;padding:13px 14px;border-bottom:1px solid #edf0f4;font-size:12px}th{color:#778399;background:#fafbfc;font-weight:650}
-.pill{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;background:#edf2f7;color:#475467;white-space:nowrap}.pill.green{background:#e7f6ef;color:#16794f}.pill.orange{background:#fff4e5;color:#a15c00}.pill.red{background:#fff0ee;color:#b54736}.actions{display:flex;gap:6px}.actions button{padding:7px 9px;font-size:11px}.empty{text-align:center;padding:35px;color:var(--muted)}
-.modal{display:none;position:fixed;inset:0;background:#10182880;align-items:center;justify-content:center;padding:18px;z-index:5}.modal.open{display:flex}.dialog{background:white;border-radius:14px;width:min(620px,100%);max-height:90vh;overflow:auto;padding:22px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:12px;font-weight:650;color:#475467}.field.full{grid-column:1/-1}.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modalhead h2{margin:0;font-size:19px}.modalfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.notice{font-size:12px;color:#667085;margin:14px 0 0;line-height:1.5}.due{font-weight:650;color:#b54736}
-@media(max-width:950px){.sidebar{width:190px}main{margin-left:190px;padding:19px}.stats{grid-template-columns:repeat(2,1fr)}}@media(max-width:650px){.sidebar{position:static;width:100%;height:auto}.sub{margin-bottom:15px}.nav{display:inline-block;margin:2px;padding:9px}main{margin:0;padding:15px}header{align-items:flex-start}.stats{gap:8px}.stat{padding:13px}.stat strong{font-size:21px}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif}
+.sidebar{position:fixed;inset:0 auto 0 0;width:235px;background:var(--navy);color:#fff;padding:25px 18px}
+.brand{font-size:23px;font-weight:800}
+.sub{font-size:10px;color:#9ca3af;letter-spacing:1px;margin:7px 0 34px}
+.nav{display:block;color:#cbd5e1;text-decoration:none;padding:12px;border-radius:8px;margin:6px 0;font-size:14px}
+.nav.active,.nav:hover{background:#26364c;color:white}
+main{margin-left:235px;padding:28px;max-width:1600px}
+header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px}
+h1{font-size:25px;margin:0 0 7px}
+.muted{font-size:13px;color:var(--muted)}
+.profile{background:#fff;border:1px solid var(--line);padding:10px 14px;border-radius:9px;font-size:13px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+.search{flex:1;min-width:210px}
+input,select,textarea{font:inherit;border:1px solid #dce2eb;border-radius:8px;padding:11px 12px;background:white;color:var(--ink);width:100%;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--teal)}
+button{border:0;border-radius:8px;padding:11px 15px;background:var(--teal);color:white;font-weight:650;cursor:pointer}
+button.secondary{background:#e9edf3;color:#344054}
+button.danger{background:#fff0ee;color:#b54736}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.stat,.tablebox{background:#fff;border:1px solid var(--line);border-radius:12px}
+.stat{padding:17px}
+.stat small{color:var(--muted)}
+.stat strong{display:block;font-size:25px;margin-top:9px}
+.tablebox{overflow:hidden}
+.tablehead{padding:18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center}
+.tablewrap{overflow:auto}
+table{border-collapse:collapse;width:100%;min-width:950px}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid #edf0f4;font-size:12px}
+th{color:#778399;background:#fafbfc;font-weight:650}
+.pill{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;background:#edf2f7;color:#475467}
+.pill.green{background:#e7f6ef;color:#16794f}
+.pill.orange{background:#fff4e5;color:#a15c00}
+.pill.red{background:#fff0ee;color:#b54736}
+.actions{display:flex;gap:6px}
+.actions button{padding:7px 9px;font-size:11px}
+.empty{text-align:center;padding:35px;color:var(--muted)}
+.modal{display:none;position:fixed;inset:0;background:#10182880;align-items:center;justify-content:center;padding:18px;z-index:5}
+.modal.open{display:flex}
+.dialog{background:white;border-radius:14px;width:min(620px,100%);max-height:90vh;overflow:auto;padding:22px}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:12px;font-weight:650;color:#475467}
+.field.full{grid-column:1/-1}
+.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.modalhead h2{margin:0;font-size:19px}
+.modalfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.notice{font-size:12px;color:#667085;margin:14px 0;line-height:1.5}
+#message{margin:12px 0;padding:10px;border-radius:8px;font-size:13px;display:none}
+#message.error{display:block;background:#fff0ee;color:#b54736}
+#message.success{display:block;background:#e7f6ef;color:#16794f}
+@media(max-width:950px){.sidebar{width:190px}main{margin-left:190px;padding:19px}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.sidebar{position:static;width:100%;height:auto}.sub{margin-bottom:15px}.nav{display:inline-block;margin:2px;padding:9px}main{margin:0;padding:15px}header{align-items:flex-start}.stats{gap:8px}.stat{padding:13px}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}}
 </style>
 </head>
 <body>
+
 <aside class="sidebar">
-  <div class="brand">SALES MANAGEMENT</div><div class="sub">LEAD MANAGEMENT SYSTEM</div>
-  <a class="nav" href="index.html">▦ &nbsp; Dashboard</a><a class="nav active" href="leads.html">♙ &nbsp; Lead Database</a>
-  <a class="nav" href="follow-up.html">◷ &nbsp; Follow-up</a><a class="nav" href="lost-sales.html">📉 &nbsp; Lost Sales</a><a class="nav" href="sales-performance.html">📊 &nbsp; Sales Performance</a>
+  <div class="brand">SALES MANAGEMENT</div>
+  <div class="sub">LEAD MANAGEMENT SYSTEM</div>
+  <a class="nav" href="index.html">▦ &nbsp; Dashboard</a>
+  <a class="nav active" href="leads.html">♙ &nbsp; Lead Database</a>
+  <a class="nav" href="follow-up.html">◷ &nbsp; Follow-up</a>
+  <a class="nav" href="lost-sales.html">📉 &nbsp; Lost Sales</a>
+  <a class="nav" href="sales-performance.html">📊 &nbsp; Sales Performance</a>
 </aside>
+
 <main>
-<header><div><h1>Lead Database</h1><div class="muted">Kelola prospek pelanggan dan aktivitas penjualan</div></div><div class="profile">Demo Workspace · Prototype</div></header>
-<section class="stats"><div class="stat"><small>Total Leads</small><strong id="total">0</strong></div><div class="stat"><small>Baru</small><strong id="newCount">0</strong></div><div class="stat"><small>Sudah Dihubungi</small><strong id="contacted">0</strong></div><div class="stat"><small>Jatuh Tempo</small><strong id="overdue">0</strong></div></section>
-<div class="toolbar"><input class="search" id="search" placeholder="Cari nama, nomor WhatsApp, atau keterangan..."><select id="statusFilter" style="max-width:220px"><option value="">Semua status</option><option value="New">Baru</option><option value="Contacted">Dihubungi</option><option value="Qualified">Qualified / Datang ke Toko</option><option value="Won">Deal / Won</option><option value="Lost">Tidak Jadi / Lost</option></select><button type="button" onclick="openForm()">+ Tambah Lead</button></div>
-<section class="tablebox"><div class="tablehead"><div><strong>Daftar Prospek</strong><div class="muted" style="margin-top:4px">Data demo tersimpan di browser ini</div></div><button class="secondary" type="button" onclick="exportCSV()">Export CSV</button></div><div class="tablewrap"><table><thead><tr><th>Nama</th><th>Sumber</th><th>Kontak</th><th>Minat Produk</th><th>Status</th><th>Tanggal Capture</th><th>Jatuh Tempo</th><th>Aksi</th></tr></thead><tbody id="rows"></tbody></table><div id="empty" class="empty" style="display:none">Belum ada lead. Klik “Tambah Lead” untuk memulai.</div></div></section>
-<p class="notice">Catatan prototype: halaman ini masih menggunakan localStorage. Data hanya tersimpan pada browser/perangkat ini dan belum tersinkron ke Supabase atau dibagikan ke anggota tim. Gunakan data fiktif sampai integrasi backend dan autentikasi selesai.</p>
+<header>
+  <div>
+    <h1>Lead Database</h1>
+    <div class="muted">Kelola prospek pelanggan dan aktivitas penjualan</div>
+  </div>
+  <div class="profile" id="userRole">Memuat akun...</div>
+</header>
+
+<div id="message"></div>
+
+<section class="stats">
+  <div class="stat"><small>Total Leads</small><strong id="total">0</strong></div>
+  <div class="stat"><small>Baru</small><strong id="newCount">0</strong></div>
+  <div class="stat"><small>Sudah Dihubungi</small><strong id="contacted">0</strong></div>
+  <div class="stat"><small>Jatuh Tempo</small><strong id="overdue">0</strong></div>
+</section>
+
+<div class="toolbar">
+  <input class="search" id="search" placeholder="Cari nama, nomor WhatsApp, atau produk...">
+  <select id="statusFilter" style="max-width:220px">
+    <option value="">Semua status</option>
+    <option value="New">Baru</option>
+    <option value="Contacted">Dihubungi</option>
+    <option value="Qualified">Qualified</option>
+    <option value="Won">Deal</option>
+    <option value="Lost">Tidak Jadi</option>
+  </select>
+  <button type="button" id="addButton">+ Tambah Lead</button>
+</div>
+
+<section class="tablebox">
+  <div class="tablehead">
+    <div>
+      <strong>Daftar Prospek</strong>
+      <div class="muted" style="margin-top:4px">Data tersimpan di Supabase</div>
+    </div>
+    <button class="secondary" type="button" id="exportButton">Export CSV</button>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Nama</th><th>Sumber</th><th>Kontak</th><th>Minat Produk</th>
+          <th>Status</th><th>Tanggal Capture</th><th>Jatuh Tempo</th><th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div id="empty" class="empty" style="display:none">Belum ada lead.</div>
+  </div>
+</section>
+
+<p class="notice">Data disimpan di database Supabase. Hak akses Sales dan Manager diatur melalui Row Level Security (RLS).</p>
 </main>
-<div class="modal" id="modal"><div class="dialog"><div class="modalhead"><h2 id="formTitle">Tambah Lead</h2><button class="secondary" type="button" onclick="closeForm()">✕</button></div>
-<form id="leadForm"><input type="hidden" id="leadId"><div class="formgrid">
-<div class="field"><label for="name">Nama pelanggan *</label><input id="name" required placeholder="Contoh: Customer Demo 04"></div>
-<div class="field"><label for="source">Sumber data *</label><select id="source" required><option value="">Pilih sumber</option><option>Walk In</option><option>WA Toko</option><option>Instagram</option><option>Website</option><option>Referral</option><option>Lainnya</option></select></div>
-<div class="field"><label for="phone">No. Telepon / WhatsApp</label><input id="phone" type="tel" placeholder="08xxxxxxxxxx"></div>
-<div class="field"><label for="status">Status follow-up</label><select id="status"><option value="New">Baru</option><option value="Contacted">Dihubungi</option><option value="Qualified">Qualified / Datang ke Toko</option><option value="Won">Deal / Won</option><option value="Lost">Tidak Jadi / Lost</option></select></div>
-<div class="field full"><label for="notes">Keterangan / produk yang diminati</label><textarea id="notes" rows="2" placeholder="Contoh: iPhone 17 Pro, MacBook Air, Samsung Galaxy"></textarea></div>
-<div class="field"><label for="captureDate">Tanggal capture *</label><input id="captureDate" type="date" required></div><div class="field"><label for="dealValue">Estimasi / nilai deal (Rp)</label><input id="dealValue" type="number" min="0" step="1" placeholder="0"></div>
-</div><div class="modalfoot"><button type="button" class="secondary" onclick="closeForm()">Batal</button><button type="submit">Simpan Lead</button></div></form></div></div>
+
+<div class="modal" id="modal">
+  <div class="dialog">
+    <div class="modalhead">
+      <h2 id="formTitle">Tambah Lead</h2>
+      <button class="secondary" type="button" id="closeButton">✕</button>
+    </div>
+    <form id="leadForm">
+      <input type="hidden" id="leadId">
+      <div class="formgrid">
+        <div class="field">
+          <label for="name">Nama pelanggan *</label>
+          <input id="name" required placeholder="Contoh: PT Maju Teknologi">
+        </div>
+        <div class="field">
+          <label for="source">Sumber data *</label>
+          <select id="source" required>
+            <option value="">Pilih sumber</option>
+            <option>Walk In</option><option>WA Toko</option>
+            <option>Instagram</option><option>Website</option>
+            <option>Referral</option><option>Lainnya</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="phone">No. Telepon / WhatsApp</label>
+          <input id="phone" type="tel" placeholder="08xxxxxxxxxx">
+        </div>
+        <div class="field">
+          <label for="productInterest">Minat produk</label>
+          <input id="productInterest" placeholder="Contoh: iPhone 17 Pro">
+        </div>
+        <div class="field">
+          <label for="status">Status follow-up</label>
+          <select id="status">
+            <option value="New">Baru</option>
+            <option value="Contacted">Dihubungi</option>
+            <option value="Qualified">Qualified</option>
+            <option value="Won">Deal</option>
+            <option value="Lost">Tidak Jadi</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="captureDate">Tanggal capture *</label>
+          <input id="captureDate" type="date" required>
+        </div>
+        <div class="field">
+          <label for="followUpDate">Tanggal follow-up</label>
+          <input id="followUpDate" type="date">
+        </div>
+        <div class="field">
+          <label for="dealValue">Estimasi nilai deal (Rp)</label>
+          <input id="dealValue" type="number" min="0" step="1" placeholder="0">
+        </div>
+        <div class="field full">
+          <label for="notes">Catatan</label>
+          <textarea id="notes" rows="3" placeholder="Catatan kebutuhan atau komunikasi pelanggan"></textarea>
+        </div>
+      </div>
+      <div class="modalfoot">
+        <button type="button" class="secondary" id="cancelButton">Batal</button>
+        <button type="submit" id="saveButton">Simpan Lead</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase.js"></script>
+<script src="./auth.js"></script>
 <script>
-// Key dipertahankan agar data demo lama di browser tidak terputus.
-const KEY='digiplus_demo_leads_v1';
-const STATUS_LABELS={New:'Baru',Contacted:'Dihubungi',Qualified:'Qualified / Datang ke Toko',Won:'Deal / Won',Lost:'Tidak Jadi / Lost'};
-const LEGACY_STATUS={Baru:'New',Dihubungi:'Contacted','Datang ke Toko':'Qualified',Deal:'Won','Tidak Jadi':'Lost'};
-function loadLeads(){try{const saved=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(saved))return [];return saved.map(lead=>({...lead,status:LEGACY_STATUS[lead.status]||lead.status||'New'}));}catch(error){console.error('Gagal membaca data lead:',error);return [];}}
-let leads=loadLeads();
-const today=()=>new Date().toISOString().slice(0,10);
-const plus7=date=>{const d=new Date(date+'T12:00:00');d.setDate(d.getDate()+7);return d.toISOString().slice(0,10)};
-const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function category(text){const t=(text||'').toLowerCase();if(/iphone|ip\s?\d|ipad|macbook|mac mini|imac|mba|mbp|mac\b/.test(t))return /iphone|ip\s?\d/.test(t)?'iPhone':'Mac / iPad / Tablet';if(/samsung|galaxy|redmi|xiaomi|oppo|vivo|realme|android/.test(t))return 'Android';if(/headset|earbuds|airpods|watch|amazfit|charger|case|casing|cable|aksesori/.test(t))return 'Aksesori / wearable';return 'Belum disebut';}
-function save(){localStorage.setItem(KEY,JSON.stringify(leads));render();}
-function render(){const q=document.getElementById('search').value.toLowerCase().trim(),f=document.getElementById('statusFilter').value;const filtered=leads.filter(x=>(!f||x.status===f)&&[x.name,x.phone,x.notes,x.source].join(' ').toLowerCase().includes(q));
-document.getElementById('total').textContent=leads.length;document.getElementById('newCount').textContent=leads.filter(x=>x.status==='New').length;document.getElementById('contacted').textContent=leads.filter(x=>x.status==='Contacted').length;document.getElementById('overdue').textContent=leads.filter(x=>!['Won','Lost'].includes(x.status)&&x.due&&x.due<today()).length;
-document.getElementById('empty').style.display=filtered.length?'none':'block';document.getElementById('rows').innerHTML=filtered.map(x=>{const cls=x.status==='Won'?'green':x.status==='Lost'?'red':x.status==='New'?'orange':'';const overdue=x.due&&x.due<today()&&!['Won','Lost'].includes(x.status);return `<tr><td><strong>${esc(x.name)}</strong></td><td>${esc(x.source)}</td><td>${esc(x.phone||'-')}</td><td>${esc(category(x.notes))}</td><td><span class="pill ${cls}">${esc(STATUS_LABELS[x.status]||x.status)}</span></td><td>${esc(x.capture)}</td><td class="${overdue?'due':''}">${esc(x.due||'-')}</td><td><div class="actions"><button class="secondary" type="button" onclick="editLead('${esc(x.id)}')">Edit</button><button class="danger" type="button" onclick="deleteLead('${esc(x.id)}')">Hapus</button></div></td></tr>`;}).join('');}
-function openForm(){document.getElementById('leadForm').reset();document.getElementById('leadId').value='';document.getElementById('captureDate').value=today();document.getElementById('status').value='New';document.getElementById('formTitle').textContent='Tambah Lead';document.getElementById('modal').classList.add('open');}
-function closeForm(){document.getElementById('modal').classList.remove('open');}
-function editLead(id){const x=leads.find(a=>a.id===id);if(!x)return;openForm();document.getElementById('formTitle').textContent='Edit Lead';document.getElementById('leadId').value=x.id;document.getElementById('name').value=x.name||'';document.getElementById('source').value=x.source||'';document.getElementById('phone').value=x.phone||'';document.getElementById('status').value=x.status||'New';document.getElementById('notes').value=x.notes||'';document.getElementById('captureDate').value=x.capture||today();document.getElementById('dealValue').value=x.value??'';}
-document.getElementById('leadForm').addEventListener('submit',e=>{e.preventDefault();const id=document.getElementById('leadId').value,capture=document.getElementById('captureDate').value,old=leads.find(x=>x.id===id);const item={id:id||crypto.randomUUID(),name:document.getElementById('name').value.trim(),source:document.getElementById('source').value,phone:document.getElementById('phone').value.trim(),status:document.getElementById('status').value,notes:document.getElementById('notes').value.trim(),capture,due:old?.due||plus7(capture),value:Number(document.getElementById('dealValue').value||0)};if(old)leads=leads.map(x=>x.id===id?item:x);else leads.unshift(item);save();closeForm();});
-function deleteLead(id){if(confirm('Hapus lead ini?')){leads=leads.filter(x=>x.id!==id);save();}}
-function exportCSV(){const cols=['Nama','Sumber','Telepon','Keterangan','Kategori Minat','Status','Tanggal Capture','Jatuh Tempo','Nilai Deal'];const data=leads.map(x=>[x.name,x.source,x.phone,x.notes,category(x.notes),STATUS_LABELS[x.status]||x.status,x.capture,x.due,x.value]);const csv=[cols,...data].map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');const url=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='sales-management-leads-demo.csv';a.click();URL.revokeObjectURL(url);}
-document.getElementById('search').addEventListener('input',render);document.getElementById('statusFilter').addEventListener('change',render);render();
+let currentUser = null;
+let leads = [];
+
+const $ = id => document.getElementById(id);
+const today = () => new Date().toISOString().slice(0,10);
+
+const STATUS_LABELS = {
+  New:"Baru",
+  Contacted:"Dihubungi",
+  Qualified:"Qualified",
+  Won:"Deal",
+  Lost:"Tidak Jadi"
+};
+
+function showMessage(text,type="error"){
+  const box=$("message");
+  box.textContent=text;
+  box.className=type;
+  box.style.display="block";
+}
+
+function clearMessage(){
+  $("message").textContent="";
+  $("message").style.display="none";
+  $("message").className="";
+}
+
+function esc(value){
+  return String(value ?? "").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+function openForm(lead=null){
+  clearMessage();
+  $("leadForm").reset();
+  $("leadId").value=lead?.id || "";
+  $("formTitle").textContent=lead ? "Edit Lead" : "Tambah Lead";
+  $("name").value=lead?.customer_name || "";
+  $("source").value=lead?.source || "";
+  $("phone").value=lead?.phone || "";
+  $("productInterest").value=lead?.product_interest || "";
+  $("status").value=lead?.status || "New";
+  $("captureDate").value=lead?.captured_at || today();
+  $("followUpDate").value=lead?.follow_up_date || "";
+  $("dealValue").value=lead?.estimated_value ?? "";
+  $("notes").value=lead?.notes || "";
+  $("modal").classList.add("open");
+}
+
+function closeForm(){
+  $("modal").classList.remove("open");
+}
+
+function updateStats(){
+  $("total").textContent=leads.length;
+  $("newCount").textContent=leads.filter(x=>x.status==="New").length;
+  $("contacted").textContent=leads.filter(x=>x.status==="Contacted").length;
+  $("overdue").textContent=leads.filter(x=>
+    !["Won","Lost"].includes(x.status) &&
+    x.follow_up_date && x.follow_up_date < today()
+  ).length;
+}
+
+function render(){
+  const q=$("search").value.toLowerCase().trim();
+  const filter=$("statusFilter").value;
+
+  const filtered=leads.filter(x=>{
+    const text=[
+      x.customer_name,x.phone,x.notes,x.source,x.product_interest
+    ].join(" ").toLowerCase();
+
+    return (!filter || x.status===filter) && text.includes(q);
+  });
+
+  updateStats();
+
+  $("empty").style.display=filtered.length ? "none" : "block";
+
+  $("rows").innerHTML=filtered.map(x=>{
+    const cls=x.status==="Won" ? "green" :
+      x.status==="Lost" ? "red" :
+      x.status==="New" ? "orange" : "";
+
+    return `<tr>
+      <td><strong>${esc(x.customer_name)}</strong></td>
+      <td>${esc(x.source || "-")}</td>
+      <td>${esc(x.phone || "-")}</td>
+      <td>${esc(x.product_interest || "-")}</td>
+      <td><span class="pill ${cls}">${esc(STATUS_LABELS[x.status] || x.status)}</span></td>
+      <td>${esc(x.captured_at || "-")}</td>
+      <td>${esc(x.follow_up_date || "-")}</td>
+      <td><div class="actions">
+        <button class="secondary" data-edit="${esc(x.id)}">Edit</button>
+        <button class="danger" data-delete="${esc(x.id)}">Hapus</button>
+      </div></td>
+    </tr>`;
+  }).join("");
+}
+
+async function loadLeads(){
+  clearMessage();
+  $("rows").innerHTML="";
+  $("empty").style.display="block";
+  $("empty").textContent="Memuat data...";
+
+  const {data,error}=await supabaseClient
+    .from("leads")
+    .select("id,owner_id,created_by,customer_name,phone,source,product_interest,status,captured_at,follow_up_date,estimated_value,notes,created_at,updated_at")
+    .order("captured_at",{ascending:false});
+
+  if(error){
+    $("empty").textContent="Gagal memuat data.";
+    showMessage("Gagal mengambil data lead: "+error.message);
+    return;
+  }
+
+  leads=data || [];
+  render();
+}
+
+async function saveLead(event){
+  event.preventDefault();
+  clearMessage();
+
+  const id=$("leadId").value;
+
+  const payload={
+    customer_name:$("name").value.trim(),
+    source:$("source").value,
+    phone:$("phone").value.trim() || null,
+    product_interest:$("productInterest").value.trim() || null,
+    status:$("status").value,
+    captured_at:$("captureDate").value,
+    follow_up_date:$("followUpDate").value || null,
+    estimated_value:Number($("dealValue").value || 0),
+    notes:$("notes").value.trim() || null,
+    updated_at:new Date().toISOString()
+  };
+
+  if(!payload.customer_name || !payload.source || !payload.captured_at){
+    showMessage("Nama pelanggan, sumber data, dan tanggal capture wajib diisi.");
+    return;
+  }
+
+  $("saveButton").disabled=true;
+  $("saveButton").textContent="Menyimpan...";
+
+  let result;
+
+  if(id){
+    result=await supabaseClient
+      .from("leads")
+      .update(payload)
+      .eq("id",id);
+  }else{
+    result=await supabaseClient
+      .from("leads")
+      .insert({
+        ...payload,
+        owner_id:currentUser.user.id,
+        created_by:currentUser.user.id
+      });
+  }
+
+  $("saveButton").disabled=false;
+  $("saveButton").textContent="Simpan Lead";
+
+  if(result.error){
+    showMessage("Gagal menyimpan lead: "+result.error.message);
+    return;
+  }
+
+  closeForm();
+  showMessage(id ? "Lead berhasil diperbarui." : "Lead berhasil ditambahkan.","success");
+  await loadLeads();
+}
+
+async function deleteLead(id){
+  const confirmed=confirm("Yakin ingin menghapus lead ini?");
+  if(!confirmed)return;
+
+  const {error}=await supabaseClient
+    .from("leads")
+    .delete()
+    .eq("id",id);
+
+  if(error){
+    showMessage("Gagal menghapus lead: "+error.message);
+    return;
+  }
+
+  showMessage("Lead berhasil dihapus.","success");
+  await loadLeads();
+}
+
+function exportCSV(){
+  const cols=["Nama","Sumber","Telepon","Minat Produk","Status","Tanggal Capture","Tanggal Follow-up","Nilai Deal","Catatan"];
+  const data=leads.map(x=>[
+    x.customer_name,x.source,x.phone,x.product_interest,
+    STATUS_LABELS[x.status] || x.status,x.captured_at,
+    x.follow_up_date,x.estimated_value,x.notes
+  ]);
+
+  const csv=[cols,...data].map(row=>
+    row.map(value=>'"'+String(value ?? "").replace(/"/g,'""')+'"').join(",")
+  ).join("\n");
+
+  const url=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="sales-management-leads.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+$("addButton").addEventListener("click",()=>openForm());
+$("closeButton").addEventListener("click",closeForm);
+$("cancelButton").addEventListener("click",closeForm);
+$("leadForm").addEventListener("submit",saveLead);
+$("search").addEventListener("input",render);
+$("statusFilter").addEventListener("change",render);
+$("exportButton").addEventListener("click",exportCSV);
+
+$("rows").addEventListener("click",event=>{
+  const editId=event.target.dataset.edit;
+  const deleteId=event.target.dataset.delete;
+
+  if(editId){
+    const lead=leads.find(x=>x.id===editId);
+    if(lead)openForm(lead);
+  }
+
+  if(deleteId)deleteLead(deleteId);
+});
+
+(async function init(){
+  try{
+    currentUser=await requireAuth();
+    if(!currentUser)return;
+
+    $("userRole").textContent=
+      currentUser.role==="manager" ? "Manager" : "Sales";
+
+    await loadLeads();
+  }catch(error){
+    showMessage("Terjadi kesalahan saat memuat halaman: "+error.message);
+  }
+})();
 </script>
-</body></html>
+</body>
+</html>
