@@ -248,13 +248,17 @@ a.menu:hover {
 <script src="./supabase.js"></script>
   <script src="./auth.js"></script>
 <script>
-  (async function () {
+ (async function () {
     const currentUser = await requireAuth();
 
     if (!currentUser) return;
 
-    console.log("Logged in as:", currentUser.role);
-  })();
+    const roleLabel = currentUser.role === "manager"
+        ? "Manager"
+        : "Sales";
+
+    document.getElementById("userRole").textContent = roleLabel;
+})();
 </script>
 </body>
 </html>
