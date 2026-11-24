@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lead Management System</title>
+  <title>Sales Management Dashboard</title>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -22,7 +22,6 @@
       padding: 26px 18px;
     }
     .brand { font-size: 23px; font-weight: 800; margin-bottom: 7px; }
-    .brand span { color: #36c5bd; }
     .subtitle { color: #9ca3af; font-size: 11px; margin-bottom: 38px; }
     .menu {
       display: block;
@@ -32,6 +31,7 @@
       border-radius: 8px;
       cursor: pointer;
       font-size: 14px;
+      text-decoration: none;
     }
     .menu.active, .menu:hover {
       background: #26364c;
@@ -79,11 +79,14 @@
       background: #edf0f5;
       border-radius: 10px;
       margin-top: 8px;
+      overflow: hidden;
     }
     .bar {
       height: 9px;
       background: #21aaa3;
       border-radius: 10px;
+      width: 0%;
+      transition: width .3s ease;
     }
     .status {
       display: inline-block;
@@ -103,6 +106,21 @@
       font-size: 12px;
     }
     th { color: #8490a3; font-weight: 600; }
+    .empty { color: #8993a4; text-align: center; padding: 22px; }
+    .error { color: #c0392b; }
+    .logout {
+      margin-top: 25px;
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      background: transparent;
+      color: #cbd5e1;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .logout:hover { background: #26364c; color: white; }
+
     @media(max-width: 900px) {
       .sidebar { width: 185px; }
       main { margin-left: 185px; padding: 20px; }
@@ -118,92 +136,88 @@
       .number { font-size: 23px; }
       header { align-items: flex-start; gap: 12px; }
     }
-  
-a.menu {
-    display: block;
-    color: inherit;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-a.menu:hover {
-    background: rgba(255, 255, 255, 0.08);
-}
-</style>
+  </style>
 </head>
 <body>
 
 <aside class="sidebar">
+  <div class="brand">SALES<br>MANAGEMENT</div>
   <div class="subtitle">LEAD MANAGEMENT SYSTEM</div>
-<a class="menu active" href="index.html">📊 &nbsp; Dashboard</a>
-<a class="menu" href="leads.html">👥 &nbsp; Lead Database</a>
-<a class="menu" href="follow-up.html">📅 &nbsp; Follow-up</a>
-<a class="menu" href="lost-sales.html">📉 &nbsp; Lost Sales</a>
-<a class="menu" href="sales-performance.html">📈 &nbsp; Sales Performance</a>
-<div class="menu">⚙️ &nbsp; Settings</div>
+
+  <a class="menu active" href="index.html">📊 &nbsp; Dashboard</a>
+  <a class="menu" href="leads.html">👥 &nbsp; Lead Database</a>
+  <a class="menu" href="follow-up.html">📅 &nbsp; Follow-up</a>
+  <a class="menu" href="lost-sales.html">📉 &nbsp; Lost Sales</a>
+  <a class="menu" href="sales-performance.html">📈 &nbsp; Sales Performance</a>
+
+  <button class="logout" onclick="logout()">Logout</button>
 </aside>
 
 <main>
   <header>
     <div>
       <h1>Sales Dashboard</h1>
-      <div class="muted">Welcome to Lead Management System</div>
+      <div class="muted">Ringkasan aktivitas dan performa penjualan</div>
     </div>
-    <div class="profile" id="userRole">Loading...</div>
+    <div class="profile" id="userRole">Memuat akun...</div>
   </header>
 
   <section class="cards">
     <div class="card">
       <div class="card-label">Total Leads</div>
       <div class="number" id="totalLeads">0</div>
-      <div class="change">↑ 12% from last month</div>
+      <div class="change">Total prospek pelanggan</div>
     </div>
     <div class="card">
       <div class="card-label">Successful Deals</div>
       <div class="number" id="successfulDeals">0</div>
-      <div class="change">↑ 8% from last month</div>
+      <div class="change">Prospek berhasil menjadi deal</div>
     </div>
     <div class="card">
       <div class="card-label">Conversion Rate</div>
       <div class="number" id="conversionRate">0%</div>
-      <div class="change">↑ 3.5% from last month</div>
+      <div class="change">Deal dibanding total leads</div>
     </div>
     <div class="card">
       <div class="card-label">Lost Sales</div>
       <div class="number" id="lostSales">0</div>
-      <div class="change" style="color:#d97757">Opportunities lost</div>
+      <div class="change" style="color:#d97757">Peluang penjualan hilang</div>
     </div>
   </section>
 
   <section class="content">
     <div class="panel">
       <h2>Lead Pipeline</h2>
+
       <div class="bar-row">
-        New Leads — 100
-        <div class="bar-bg"><div class="bar" style="width:100%"></div></div>
+        <span>New Leads — <strong id="newCount">0</strong></span>
+        <div class="bar-bg"><div class="bar" id="newBar"></div></div>
       </div>
+
       <div class="bar-row">
-        Contacted — 75
-        <div class="bar-bg"><div class="bar" style="width:75%"></div></div>
+        <span>Contacted — <strong id="contactedCount">0</strong></span>
+        <div class="bar-bg"><div class="bar" id="contactedBar"></div></div>
       </div>
+
       <div class="bar-row">
-        Store Visit — 45
-        <div class="bar-bg"><div class="bar" style="width:45%"></div></div>
+        <span>Qualified — <strong id="qualifiedCount">0</strong></span>
+        <div class="bar-bg"><div class="bar" id="qualifiedBar"></div></div>
       </div>
+
       <div class="bar-row">
-        Successful Deals — 30
-        <div class="bar-bg"><div class="bar" style="width:30%"></div></div>
+        <span>Successful Deals — <strong id="wonCount">0</strong></span>
+        <div class="bar-bg"><div class="bar" id="wonBar"></div></div>
       </div>
-      <div class="note">Illustrative demo data — not connected to a database.</div>
+
+      <div class="note" id="pipelineNote">Data pipeline diambil dari Supabase.</div>
     </div>
 
     <div class="panel">
       <h2>Lost Sales Overview</h2>
-      <div class="bar-row">Price Issue <span style="float:right">12</span></div>
-      <div class="bar-row">Out of Stock <span style="float:right">9</span></div>
-      <div class="bar-row">Competitor <span style="float:right">7</span></div>
-      <div class="bar-row">Customer Cancel <span style="float:right">4</span></div>
-      <div class="note">Sample categories for analysis.</div>
+      <div id="lostReasons">
+        <div class="note">Memuat data...</div>
+      </div>
+      <div class="note">Berdasarkan alasan kehilangan penjualan.</div>
     </div>
   </section>
 
@@ -219,46 +233,174 @@ a.menu:hover {
             <th>Status</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>Customer Demo 01</td>
-            <td>iPhone</td>
-            <td>Sales A</td>
-            <td><span class="status">Contacted</span></td>
-          </tr>
-          <tr>
-            <td>Customer Demo 02</td>
-            <td>MacBook</td>
-            <td>Sales B</td>
-            <td><span class="status">New Lead</span></td>
-          </tr>
-          <tr>
-            <td>Customer Demo 03</td>
-            <td>iPad</td>
-            <td>Sales C</td>
-            <td><span class="status">Store Visit</span></td>
-          </tr>
+        <tbody id="recentLeads">
+          <tr><td colspan="4" class="empty">Memuat data leads...</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="note">All customer names above are fictional demonstration data.</div>
+    <div class="note">Data terbaru dari database Supabase.</div>
   </section>
+
+  <div class="note" id="dashboardMessage"></div>
 </main>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./supabase.js"></script>
-  <script src="./auth.js"></script>
+<script src="./auth.js"></script>
+
 <script>
- (async function () {
-    const currentUser = await requireAuth();
+(async function () {
+  const currentUser = await requireAuth();
+  if (!currentUser) return;
 
-    if (!currentUser) return;
+  document.getElementById("userRole").textContent =
+    currentUser.role === "manager" ? "Manager" : "Sales";
 
-    const roleLabel = currentUser.role === "manager"
-        ? "Manager"
-        : "Sales";
+  const statusLabels = {
+    New: "Baru",
+    Contacted: "Dihubungi",
+    Qualified: "Qualified",
+    Won: "Deal",
+    Lost: "Tidak Jadi"
+  };
 
-    document.getElementById("userRole").textContent = roleLabel;
+  function setText(id, value) {
+    document.getElementById(id).textContent = value;
+  }
+
+  function setBar(id, value, max) {
+    const percentage = max > 0 ? (value / max) * 100 : 0;
+    document.getElementById(id).style.width = percentage + "%";
+  }
+
+  function showError(message) {
+    document.getElementById("dashboardMessage").textContent = message;
+    document.getElementById("dashboardMessage").classList.add("error");
+  }
+
+  try {
+    const [leadsResult, lostResult] = await Promise.all([
+      supabaseClient
+        .from("leads")
+        .select("id, owner_id, customer_name, product_interest, status, created_at, captured_at")
+        .order("created_at", { ascending: false }),
+
+      supabaseClient
+        .from("lost_sales")
+        .select("id, reason, customer_name, lost_date")
+        .order("lost_date", { ascending: false })
+    ]);
+
+    if (leadsResult.error) throw leadsResult.error;
+    if (lostResult.error) throw lostResult.error;
+
+    const leads = leadsResult.data || [];
+    const lostRecords = lostResult.data || [];
+
+    const countStatus = status =>
+      leads.filter(lead => lead.status === status).length;
+
+    const total = leads.length;
+    const won = countStatus("Won");
+    const newLeads = countStatus("New");
+    const contacted = countStatus("Contacted");
+    const qualified = countStatus("Qualified");
+    const conversion = total > 0 ? (won / total) * 100 : 0;
+
+    setText("totalLeads", total);
+    setText("successfulDeals", won);
+    setText("conversionRate", conversion.toFixed(1) + "%");
+    setText("lostSales", lostRecords.length);
+
+    setText("newCount", newLeads);
+    setText("contactedCount", contacted);
+    setText("qualifiedCount", qualified);
+    setText("wonCount", won);
+
+    const maxPipeline = Math.max(
+      newLeads, contacted, qualified, won, 1
+    );
+
+    setBar("newBar", newLeads, maxPipeline);
+    setBar("contactedBar", contacted, maxPipeline);
+    setBar("qualifiedBar", qualified, maxPipeline);
+    setBar("wonBar", won, maxPipeline);
+
+    // Lost Sales reasons
+    const reasonCounts = {};
+
+    lostRecords.forEach(item => {
+      const reason = item.reason || "Lainnya";
+      reasonCounts[reason] = (reasonCounts[reason] || 0) + 1;
+    });
+
+    const reasonContainer = document.getElementById("lostReasons");
+    const sortedReasons = Object.entries(reasonCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5);
+
+    if (sortedReasons.length === 0) {
+      reasonContainer.innerHTML =
+        '<div class="empty">Belum ada data Lost Sales.</div>';
+    } else {
+      reasonContainer.innerHTML = sortedReasons.map(([reason, count]) => `
+        <div class="bar-row">
+          ${escapeHTML(reason)}
+          <span style="float:right">${count}</span>
+        </div>
+      `).join("");
+    }
+
+    // Recent Leads
+    const recentContainer = document.getElementById("recentLeads");
+    const recent = leads.slice(0, 5);
+
+    if (recent.length === 0) {
+      recentContainer.innerHTML =
+        '<tr><td colspan="4" class="empty">Belum ada data leads.</td></tr>';
+    } else {
+      recentContainer.innerHTML = recent.map(lead => {
+        const salesLabel =
+          lead.owner_id === currentUser.user.id ? "Anda" : "Sales";
+
+        const statusLabel =
+          statusLabels[lead.status] || lead.status || "-";
+
+        return `
+          <tr>
+            <td>${escapeHTML(lead.customer_name || "-")}</td>
+            <td>${escapeHTML(lead.product_interest || "-")}</td>
+            <td>${salesLabel}</td>
+            <td><span class="status">${escapeHTML(statusLabel)}</span></td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    setText(
+      "pipelineNote",
+      "Menampilkan " + total + " leads dari database Supabase."
+    );
+
+  } catch (error) {
+    console.error("Dashboard error:", error);
+    showError(
+      "Gagal memuat data dashboard: " +
+      (error.message || "Terjadi kesalahan.")
+    );
+  }
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    })[char]);
+  }
 })();
 </script>
+
 </body>
 </html>
