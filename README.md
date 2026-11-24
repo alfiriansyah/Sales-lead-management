@@ -142,7 +142,7 @@ Through this project, I aim to develop practical skills in:
 Business Development | Marketing | Sales Operations | Digital Business Solutions
 
 - GitHub: [@alfiriansyah](https://github.com/alfiriansyah)
-- LinkedIn: [Alfi Riansyah](https://www.linkedin.com/)
+- LinkedIn: [Alfi Riansyah](https://www.linkedin.com/in/alfi-riansyah-s-h-b27460235/)
 
 ---
 
